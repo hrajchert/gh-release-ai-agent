@@ -30,9 +30,9 @@ await openai.beta.assistants.update(assistant.id, {
   },
 });
 
-// const prompt = "How many releases are they?";
+const prompt = "How many releases are they?";
 // const prompt = "What is the latest release?";
-const prompt = "What is the first release?";
+// const prompt = "What is the first release?";
 // const prompt = "Give me the fixes since version 3.11.0";
 
 const thread = await openai.beta.threads.create({
