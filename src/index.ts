@@ -1,5 +1,11 @@
-import { Effect, Console } from "effect"
+import { Effect, Console, Config } from "effect";
+import * as dotenv from "dotenv";
+import { getConfig } from "./config.js";
+dotenv.config();
 
-const program = Console.log("Hello, World!")
+const program = Effect.gen(function* () {
+  const config = yield* getConfig;
+  yield* Console.log("Hello, World!", config);
+});
 
-Effect.runSync(program)
+Effect.runSync(program);

@@ -222,14 +222,29 @@ async function handleRunStatus(
   return run;
 }
 
+const generalInstruction =
+  "You are an assistant that provides information of the releases of the superwall/Superwall-iOS github project.";
+const markdownFormatInstruction =
+  "Write the responses in Markdown and when you include a version in the text always add it as a link.";
+
+const htmlFormatInstruction =
+  "Write the responses as a simple HTML fragment without styles and when you include a version always add it as an achor tag";
+
+const plainFormatInstruction =
+  "Write the responses in plain text (no Markdown) as if you were to print them in a terminal without colours or special characters. When you include a version make sure to include a citation at the end with the link, such as `More info about 1.0.0 in https://the-url-to-release`.";
+
+const alwaysIncludeVersion =
+  "When you give information about something that was released, make sure to always include the version when it was released";
+
 const assistant = await openai.beta.assistants.create({
   name: "dirty test superwall with tools",
   instructions: `
-    You are an assistant that provides information of the releases of the superwall/Superwall-iOS github project. 
+    ${generalInstruction}     
     
-    Write the responses in Markdown and when you include a version in the text always add it as a link.
+    ${plainFormatInstruction}
 
-    When you give information about something that was released, make sure to always include the version when it was released?`,
+    ${alwaysIncludeVersion}
+    `,
   model: "gpt-4o",
   // tools: [{ type: "file_search" }],
   tools: functionsDef.map((def) => ({ type: "function", function: def })),
