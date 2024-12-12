@@ -1,0 +1,30 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Asistant Poc",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/assistant-poc.ts",
+      "runtimeExecutable": "tsx",
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Asistant Poc with tools",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/assistant-poc-with-tools.ts",
+      "runtimeExecutable": "tsx",
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Download Releases Poc",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/src/download-releases-poc.ts",
+      "runtimeExecutable": "tsx",
+    }
+
+  ]
+}
