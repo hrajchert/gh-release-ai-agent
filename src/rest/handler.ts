@@ -1,19 +1,20 @@
 import {
+  FileSystem,
   HttpApi,
   HttpApiBuilder,
-  HttpApiEndpoint,
   HttpApiGroup,
-  HttpApiSchema,
 } from "@effect/platform";
-import { DateTime, Effect, Layer, Schema } from "effect";
+import { Effect, Layer } from "effect";
 
 import { Api } from "./api.js";
 import { getConfig } from "../config.js";
 import { ConfigError } from "effect/ConfigError";
+import { indexRepository } from "../indexer.js";
 
 export const ReleaseQuestionApiLive: Layer.Layer<
   HttpApiGroup.ApiGroup<"releases">,
-  ConfigError
+  ConfigError,
+  FileSystem.FileSystem
 > = HttpApiBuilder.group(Api, "releases", (handlers) =>
   Effect.gen(function* () {
     const config = yield* getConfig;
@@ -25,10 +26,18 @@ export const ReleaseQuestionApiLive: Layer.Layer<
             `Hello world ${payload.question} ${payload.format} ${config.owner} ${config.openAIApiKey}`
           )
         )
-        .handle("index", () => Effect.succeed({ releases: 2 }))
+        .handle("index", () =>
+          Effect.gen(function* () {
+            const releaseIndex = yield* Effect.orDie(indexRepository(config));
+            return { releases: releaseIndex.length };
+          })
+        )
     );
   })
 );
 
-export const ApiLive: Layer.Layer<HttpApi.Api, ConfigError> =
-  HttpApiBuilder.api(Api).pipe(Layer.provide(ReleaseQuestionApiLive));
+export const ApiLive: Layer.Layer<
+  HttpApi.Api,
+  ConfigError,
+  FileSystem.FileSystem
+> = HttpApiBuilder.api(Api).pipe(Layer.provide(ReleaseQuestionApiLive));
