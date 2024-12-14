@@ -36,9 +36,11 @@ export class ReleaseQuestionApi extends HttpApiGroup.make("releases")
     HttpApiEndpoint.post("index")`/releases/index`.addSuccess(IndexResponse)
   ) {}
 
-export class Api extends HttpApi.empty.add(ReleaseQuestionApi).annotateContext(
-  OpenApi.annotations({
-    title: "GitHub Release AI Agent",
-    description: "API to ask questions to an LLM for a project. ",
-  })
-) {}
+export class Api extends HttpApi.make("api")
+  .add(ReleaseQuestionApi)
+  .annotateContext(
+    OpenApi.annotations({
+      title: "GitHub Release AI Agent",
+      description: "API to ask questions to an LLM for a project. ",
+    })
+  ) {}

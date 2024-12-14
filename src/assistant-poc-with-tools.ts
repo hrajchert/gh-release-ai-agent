@@ -241,8 +241,6 @@ const assistant = await openai.beta.assistants.create({
   instructions: `
     ${generalInstruction}     
     
-    ${plainFormatInstruction}
-
     ${alwaysIncludeVersion}
     `,
   model: "gpt-4o",
@@ -276,6 +274,7 @@ const thread = await openai.beta.threads.create({
 
 let run = await openai.beta.threads.runs.createAndPoll(thread.id, {
   assistant_id: assistant.id,
+  instructions: plainFormatInstruction,
 });
 
 run = await handleRunStatus(run);

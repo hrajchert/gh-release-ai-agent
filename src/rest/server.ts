@@ -9,6 +9,7 @@ import { Layer } from "effect";
 import { createServer } from "node:http";
 import { ApiLive } from "./handler.js";
 import * as dotenv from "dotenv";
+import { CompletionsLive } from "../agent/assistant-via-completions.js";
 
 dotenv.config();
 
@@ -23,7 +24,9 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
   // Log the address the server is listening on
   HttpServer.withLogAddress,
   // Provide the HTTP server implementation
-  Layer.provide(NodeHttpServer.layer(createServer, { port: 3000 }))
+  Layer.provide(NodeHttpServer.layer(createServer, { port: 3000 })),
+
+  Layer.provide(CompletionsLive)
 );
 
 // run the server
