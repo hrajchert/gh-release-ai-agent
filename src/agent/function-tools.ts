@@ -3,7 +3,7 @@ import { FileSystem } from "@effect/platform";
 import { ensureDbDirectory } from "../indexer.js";
 import { GHReleaseAgentConfig } from "../config.js";
 
-class GetReleaseArguments extends Schema.Class<GetReleaseArguments>(
+export class GetReleaseArguments extends Schema.Class<GetReleaseArguments>(
   "GetReleaseArguments"
 )({
   tag: Schema.String.annotations({ description: "The tag of a release" }),

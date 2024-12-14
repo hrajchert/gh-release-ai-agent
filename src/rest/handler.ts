@@ -12,11 +12,12 @@ import { ConfigError } from "effect/ConfigError";
 import { indexRepository } from "../indexer.js";
 import { ask } from "../agent/assistant-via-completions.js";
 import { Completions } from "@effect/ai";
+import { Registry } from "@effect/ai/AiToolkit";
 
 export const ReleaseQuestionApiLive: Layer.Layer<
   HttpApiGroup.ApiGroup<"api", "releases">,
   ConfigError,
-  FileSystem.FileSystem | Completions.Completions
+  FileSystem.FileSystem | Completions.Completions | Registry
 > = HttpApiBuilder.group(Api, "releases", (handlers) =>
   Effect.gen(function* () {
     const config = yield* getConfig;
@@ -47,5 +48,5 @@ export const ReleaseQuestionApiLive: Layer.Layer<
 export const ApiLive: Layer.Layer<
   HttpApi.Api,
   ConfigError,
-  FileSystem.FileSystem | Completions.Completions
+  FileSystem.FileSystem | Completions.Completions | Registry
 > = HttpApiBuilder.api(Api).pipe(Layer.provide(ReleaseQuestionApiLive));

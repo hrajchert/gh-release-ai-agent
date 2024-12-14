@@ -10,6 +10,7 @@ import { createServer } from "node:http";
 import { ApiLive } from "./handler.js";
 import * as dotenv from "dotenv";
 import { CompletionsLive } from "../agent/assistant-via-completions.js";
+import { Registry } from "@effect/ai/AiToolkit";
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ const HttpLive = HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
   HttpServer.withLogAddress,
   // Provide the HTTP server implementation
   Layer.provide(NodeHttpServer.layer(createServer, { port: 3000 })),
-
+  Layer.provide(Registry.Live),
   Layer.provide(CompletionsLive)
 );
 
